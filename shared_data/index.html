@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <title>Platform Monitoring Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { background: #0f172a; color: #f1f5f9; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
+        .dashboard { display: grid; grid-template-columns: 1fr 300px; gap: 20px; max-width: 1200px; margin: auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        .card { background: #1e293b; padding: 20px; border-radius: 12px; border-left: 6px solid #64748b; transition: 0.3s; }
+        .ONLINE { border-left-color: #22c55e; box-shadow: 0 4px 15px -5px #22c55e; }
+        .OFFLINE { border-left-color: #ef4444; box-shadow: 0 4px 15px -5px #ef4444; }
+        .chart-container { background: #1e293b; padding: 20px; border-radius: 12px; height: fit-content; }
+        h1 { text-align: center; color: #38bdf8; }
+    </style>
+</head>
+<body>
+    <h1>System Health Monitor</h1>
+    
+    <div class="dashboard">
+        <div id="pajisjet" class="grid">Duke ngarkuar pajisjet...</div>
+        
+        <div class="chart-container">
+            <canvas id="statusChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        let myChart;
+
+        async function updateDashboard() {
+            try {
+                const res = await fetch('status.json?t=' + Date.now());
+                const data = await res.json();
+                
+                let onlineCount = 0;
+                let offlineCount = 0;
+                let html = '';
+
+                data.forEach(p => {
+                    if(p.status === 'ONLINE') onlineCount++; else offlineCount++;
+                    html += `
+                        <div class="card ${p.status}">
+                            <h3 style="margin:0">${p.name}</h3>
+                            <p style="font-size:0.8em; color:#94a3b8">${p.ip}</p>
+                            <b style="color:${p.status === 'ONLINE' ? '#22c55e' : '#ef4444'}">${p.status}</b>
+                            <div style="font-size:0.7em; margin-top:10px">Update: ${p.last_update}</div>
+                        </div>`;
+                });
+                
+                document.getElementById('pajisjet').innerHTML = html;
+                updateChart(onlineCount, offlineCount);
+            } catch (e) { console.error("Error:", e); }
+        }
+
+        function updateChart(on, off) {
+            const ctx = document.getElementById('statusChart').getContext('2d');
+            if (myChart) {
+                myChart.data.datasets[0].data = [on, off];
+                myChart.update();
+            } else {
+                myChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Online', 'Offline'],
+                        datasets: [{
+                            data: [on, off],
+                            backgroundColor: ['#22c55e', '#ef4444'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: { plugins: { legend: { labels: { color: 'white' } } } }
+                });
+            }
+        }
+
+        setInterval(updateDashboard, 5000);
+        updateDashboard();
+    </script>
+</body>
+</html>

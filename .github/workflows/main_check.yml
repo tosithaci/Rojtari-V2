@@ -1,0 +1,24 @@
+name: Kontrolli Automatik i Rojtarit
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  testi-i-sistemit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Shkarko kodin e projektit
+      uses: actions/checkout@v4
+
+    - name: Kontrollo strukturen e Docker Compose
+      run: docker compose config
+
+    - name: Provo te ndezesh kontejneret
+      run: |
+        docker compose up -d
+        sleep 15
+        docker ps
