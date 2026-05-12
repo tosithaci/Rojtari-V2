@@ -12,10 +12,11 @@ services:
     restart: always
 
   prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus
+    image: prom/prometheus
     volumes:
-    - .:/etc/prometheus/
+      - ./:/etc/prometheus/
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
     ports:
       - "9090:9090"
     restart: always

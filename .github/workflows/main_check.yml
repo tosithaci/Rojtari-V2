@@ -13,7 +13,10 @@ jobs:
     steps:
     - name: Shkarko kodin e projektit
       uses: actions/checkout@v4
-
+    - name: Debug Path
+      run: |
+        pwd
+        ls -la
     - name: Kontrollo strukturen e Docker Compose
       run: docker compose config
 

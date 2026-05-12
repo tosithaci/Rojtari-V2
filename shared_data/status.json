@@ -3,30 +3,30 @@
         "name": "Google DNS",
         "ip": "8.8.8.8",
         "status": "ONLINE",
-        "last_update": "17:42:24"
+        "last_update": "17:36:59"
     },
     {
         "name": "Cloudflare",
         "ip": "1.1.1.1",
         "status": "ONLINE",
-        "last_update": "17:42:24"
+        "last_update": "17:36:59"
     },
     {
         "name": "Gateway",
         "ip": "192.168.1.1",
         "status": "OFFLINE",
-        "last_update": "17:42:25"
+        "last_update": "17:37:00"
     },
     {
         "name": "Telefoni",
         "ip": "192.168.100.213",
         "status": "OFFLINE",
-        "last_update": "17:42:25"
+        "last_update": "17:37:00"
     },
     {
         "name": "localhost",
         "ip": "127.0.0.1",
         "status": "ONLINE",
-        "last_update": "17:42:24"
+        "last_update": "17:36:59"
     }
 ]
