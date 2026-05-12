@@ -5,5 +5,3 @@ scrape_configs:
   - job_name: 'rojtari_metrics'
     static_configs:
       - targets: ['rojtari:8000']
-    volumes:
-  - ./prometheus.yml:/etc/prometheus/prometheus.yml
